@@ -1,6 +1,8 @@
 
-[![Build
-Status](https://api.travis-ci.org/repositories/freshtonic/lazylet.svg?branch=master)](https://travis-ci.org/freshtonic/lazylet.git)
+
+# NOTE!
+
+LazyLet has been renamed to Given and now lives here [github.com/freshtonic/given.js](http://github.com/freshtonic/given.js).
 
 # lazylet
 
@@ -237,7 +239,7 @@ Add it to your package.json or `npm install lazylet`.
         expect(function() {
           Let('Let', 'anything');
         }).to.throwException(function(e) {
-          expect(e).to.equal('cannot redefine Let');
+          expect(e.message).to.equal('cannot redefine Let');
         });
 
       });
@@ -258,7 +260,7 @@ Add it to your package.json or `npm install lazylet`.
         expect(function() {
           return env.a;
         }).to.throwException(function(e) {
-          expect(e).to.match(/recursive definition of variable '(a|b)' detected/);
+          expect(e.message).to.match(/recursive definition of variable '(a|b)' detected/);
         });
 
       });
@@ -286,7 +288,7 @@ Add it to your package.json or `npm install lazylet`.
         expect(function() {
           return env.viaEnv;
         }).to.throwException(function(e) {
-          expect(e).to.equal("illegal attempt to access the Let environment in the definition of 'viaEnv'");
+          expect(e.message).to.equal("illegal attempt to access the Let environment in the definition of 'viaEnv'");
         });
 
       });
@@ -408,13 +410,13 @@ describe "LazyLet", ->
 
     it 'does not allow redefinition of "Let"', ->
       expect(-> Let 'Let', 'anything').to.throwException (e) ->
-        expect(e).to.equal 'cannot redefine Let'
+        expect(e.message).to.equal 'cannot redefine Let'
 
     it 'gives a meaningful error when recursive definitions blow the stack', ->
       Let a: -> @b
       Let b: -> @a
       expect(-> env.a).to.throwException (e) ->
-        expect(e).to.match /recursive definition of variable '(a|b)' detected/
+        expect(e.message).to.match /recursive definition of variable '(a|b)' detected/
 
     it 'prevents the Let environment from being referenced within a builder function', ->
       Let foo: -> 'foo'
@@ -422,7 +424,7 @@ describe "LazyLet", ->
       Let viaEnv: -> env.foo
       expect(env.viaThis).to.eql 'foo'
       expect(-> env.viaEnv).to.throwException (e) ->
-        expect(e).to.equal "illegal attempt to access the Let environment in the definition of 'viaEnv'"
+        expect(e.message).to.equal "illegal attempt to access the Let environment in the definition of 'viaEnv'"
 
 ```
 
